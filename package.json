@@ -9,10 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "dgram": "^1.0.1",
+    "dns": "^0.2.2",
     "eslint": "8.39.0",
     "eslint-config-next": "13.4.1",
-    "next": "13.4.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "fs": "^0.0.1-security",
+    "mongodb": "^5.6.0",
+    "net": "^1.0.2",
+    "next": "^13.4.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tls": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "18.2.13"
   }
 }
