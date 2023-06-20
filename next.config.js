@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-//const nextConfig = {};
+const nextConfig = {};
 
 // const nextConfig = {
 //   webpack5: true,
@@ -13,16 +13,4 @@
 //   },
 // };
 
-const nextConfig = {
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.node = {
-        fs: "empty",
-        dgram: "empty",
-      };
-    }
-
-    return config;
-  },
-};
 module.exports = nextConfig;
