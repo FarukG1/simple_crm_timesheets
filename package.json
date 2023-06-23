@@ -1,5 +1,5 @@
 {
-  "name": "nextjs",
+  "name": "swe-praktikum",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,23 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "dns": "^0.2.2",
-    "eslint": "8.39.0",
-    "eslint-config-next": "13.4.1",
-    "mongodb": "^5.6.0",
-    "net": "^1.0.2",
-    "next": "^13.4.6",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "tls": "^0.0.1"
-  },
-  "devDependencies": {
-    "@types/react": "18.2.13"
-  },
-  "browser": {
-    "fs": false,
-    "os": false,
-    "path": false,
-    "dgram": false
+    "@next/font": "13.1.1",
+    "eslint": "8.31.0",
+    "eslint-config-next": "13.1.1",
+    "fs": "^0.0.1-security",
+    "gray-matter": "^4.0.3",
+    "mongodb": "^5.0.1",
+    "next": "13.1.1",
+    "nodemailer": "^6.9.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "remark": "^14.0.2",
+    "remark-html": "^15.0.1",
+    "vercel": "^28.15.3"
   }
 }

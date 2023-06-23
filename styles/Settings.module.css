@@ -1,0 +1,64 @@
+.container {
+  height: 100%;
+  width: 100%;
+  background-color: #333;
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 20px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+.questionContainer,
+.insuranceContainer {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+}
+.insuranceContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  justify-content: space-between;
+  padding: 15px;
+}
+.questionLabel,
+.insuranceLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.textInput {
+  width: 300px;
+}
+.check {
+  float: right;
+  display: flex;
+  justify-content: right;
+  gap: 15px;
+}
+.shortTextInput {
+  width: 300px;
+}
+.longTextInput {
+  width: 300px;
+}
+.links {
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: #0c7dc0;
+  border-radius: 10px;
+  border-color: #333;
+  width: 100%;
+  height: 30px;
+}
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}

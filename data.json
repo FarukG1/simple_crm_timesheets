@@ -1,0 +1,30 @@
+{
+    "v1": {
+        "name": "Versicherung 1",
+        "q1": true,
+        "q2": false,
+        "q3": false,
+        "q4": false
+    },
+    "v2": {
+        "name": "Versicherung 2",
+        "q1": false,
+        "q2": true,
+        "q3": false,
+        "q4": false
+    },
+    "v3": {
+        "name": "Versicherung 3",
+        "q1": false,
+        "q2": false,
+        "q3": true,
+        "q4": false
+    },
+    "v4": {
+        "name": "Versicherung 4",
+        "q1": false,
+        "q2": false,
+        "q3": false,
+        "q4": true
+    }
+}
