@@ -1,7 +1,6 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import NavBar from "../components/navbar";
-import FormSearch from "../components/formSearch";
 import clientPromise from "../lib/mongodb";
 
 export default function Home({ questions }) {
@@ -14,9 +13,7 @@ export default function Home({ questions }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavBar />
-      <main className={styles.main}>
-        <FormSearch _questions={questions[0].json} />
-      </main>
+      <main className={styles.main}></main>
     </>
   );
 }
