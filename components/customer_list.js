@@ -1,5 +1,5 @@
 import styles from "../styles/ContactTable.module.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function CustomerList({ customers }) {
   const [data, setData] = useState(JSON.parse(customers));
@@ -13,7 +13,7 @@ export default function CustomerList({ customers }) {
           <th>PLZ</th>
           <th>Stadt</th>
           <th>E-Mail</th>
-          <th>ID</th>
+          <th>Im Pflegeheim</th>
         </tr>
       </thead>
       <tbody>
@@ -25,7 +25,8 @@ export default function CustomerList({ customers }) {
               </th>
               <th>
                 {new Date(Date.parse(customer.birthdate)).toLocaleDateString(
-                  "de-DE"
+                  "de-DE",
+                  { timeZone: "UTC" }
                 )}
               </th>
               <th>
@@ -33,8 +34,8 @@ export default function CustomerList({ customers }) {
               </th>
               <th>{customer.adress.zip}</th>
               <th>{customer.adress.city}</th>
-              <th>{customer.adress.email}</th>
-              <th>{customer.adress.id}</th>
+              <th>{customer.email}</th>
+              <th>{customer.inhouse ? <>Ja</> : <>Nein</>}</th>
             </tr>
           );
         })}

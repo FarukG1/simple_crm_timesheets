@@ -31,7 +31,6 @@ export class DatabaseClass {
   
     } catch (e) {
       console.error(e);
-      throw new Error("Failed to fetch data");
     } finally {
       await client.close();
     }
@@ -88,7 +87,6 @@ export class DatabaseClass {
   
     } catch (e) {
       console.error(e);
-      throw new Error("Failed to fetch data");
     } finally {
       await client.close();
     }
@@ -115,7 +113,6 @@ export class DatabaseClass {
   
     } catch (e) {
       console.error(e);
-      throw new Error("Failed to fetch data");
     } finally {
       await client.close();
     }
