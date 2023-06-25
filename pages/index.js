@@ -1,9 +1,18 @@
+// Default imports
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
+import toolbar from "../styles/Toolbar.module.css";
 import NavBar from "../components/navbar";
 import clientPromise from "../lib/mongodb";
+import Modal from "react-modal";
+import { useEffect, useState } from "react";
 
-export default function Home({ questions }) {
+export default function Home({ appointments, caregivers }) {
+  const [data, setData] = useState({
+    appointments: JSON.parse(appointments),
+    caregivers: JSON.parse(caregivers),
+  });
+
   return (
     <>
       <Head>
@@ -13,7 +22,33 @@ export default function Home({ questions }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavBar />
-      <main className={styles.main}></main>
+      <main className={styles.main}>
+        <div className={toolbar.container}>
+          <div className={toolbar.buttonContainer}>
+            <div className={toolbar.searchContainer}>
+              <div className={toolbar.textInput}>
+                <select
+                  className={toolbar.longSelectButton}
+                  onChange={(event) => {}}
+                >
+                  <option value="monday">Montag</option>
+                  <option value="tuesday">Dienstag</option>
+                  <option value="wednesday">Mittwoch</option>
+                  <option value="thursday">Donnerstag</option>
+                  <option value="friday">Freitag</option>
+                  <option value="saturday">Samstag</option>
+                  <option value="sunday">Sonntag</option>
+                </select>
+              </div>
+            </div>
+            <div className={toolbar.buttons}>
+              <button className={toolbar.editButton} onClick={() => {}}>
+                Öffnen
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
     </>
   );
 }
@@ -21,17 +56,26 @@ export default function Home({ questions }) {
 export async function getServerSideProps() {
   try {
     const client = await clientPromise;
-    const db = client.db("fairsichern");
+    const db = client.db("swe-projekt");
 
-    const questions = await db
-      .collection("questions")
+    const appointments = await db
+      .collection("termine")
       .find({})
       .sort({ _id: -1 })
       .limit(1)
       .toArray();
 
+    const caregivers = await db
+      .collection("pflegekraft")
+      .find({})
+      .sort({ lastname: 1 })
+      .toArray();
+
     return {
-      props: { questions: JSON.parse(JSON.stringify(questions)) },
+      props: {
+        appointments: JSON.stringify(appointments),
+        caregivers: JSON.stringify(caregivers),
+      },
     };
   } catch (e) {
     console.error(e);

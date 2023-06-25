@@ -28,7 +28,7 @@ export default function FormDeleteContact({ customers, caregivers }) {
   };
   return (
     <>
-      <h1>Kontakt Bearbeiten:</h1>
+      <h1>Kontakt Löschen:</h1>
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.optionContainer}>
           <div className={styles.option}>
@@ -88,9 +88,9 @@ export default function FormDeleteContact({ customers, caregivers }) {
               );
             })}
         </select>
-        <div className={styles.submitContainer}>
+        <div className={styles.submitDeleteContainer}>
           <button type="submit" name="submit">
-            Speichern
+            Löschen
           </button>
         </div>
       </form>

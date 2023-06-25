@@ -1,11 +1,8 @@
 import styles from "../../../styles/Form.module.css";
 import { useEffect, useState } from "react";
 
-export default function FormEditContact({ customers, caregivers }) {
-  const [data, setData] = useState({
-    customers: JSON.parse(customers),
-    caregivers: JSON.parse(caregivers),
-  });
+export default function FormEditContact({ appointments }) {
+  const [data, setData] = useState(JSON.parse(appointments));
   const [ContactType, setContactType] = useState("customer");
   const [selectedContact, setSelectedContact] = useState({});
   const [editedContact, setEditedContact] = useState({});
@@ -16,10 +13,10 @@ export default function FormEditContact({ customers, caregivers }) {
 
   useEffect(() => {
     if (ContactType == "customer") {
-      setSelectedContact(data.customers[0]);
+      setSelectedContact(data[0]);
     }
     if (ContactType == "caregiver") {
-      setSelectedContact(data.caregivers[0]);
+      setSelectedContact(data[0]);
     }
   }, [ContactType]);
 

@@ -1,12 +1,41 @@
+// Default imports
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
+import toolbar from "../styles/Toolbar.module.css";
 import NavBar from "../components/navbar";
 import clientPromise from "../lib/mongodb";
+import Modal from "react-modal";
+import { use, useEffect, useState } from "react";
 
+// Page specific imports
 import AppointmentList from "../components/list/appointment";
+import FormNewAppointment from "../components/formular/appointment/new";
+import FormEditAppointment from "../components/formular/appointment/edit";
+import FormDeleteAppointment from "../components/formular/appointment/delete";
 
-export default function Kalender({ appointments }) {
-  const appointmentsJSON = JSON.parse(appointments);
+export default function Kalender({ appointments, caregivers, customers }) {
+  const [ModalState, setModalState] = useState({ value: false, modal: "new" });
+  const [caregiverList, setCaregiverList] = useState(JSON.parse(caregivers));
+  const [selectedContact, setSelectedContact] = useState({});
+  const customStyles = {
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.6)",
+    },
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      width: "50%",
+    },
+  };
+
+  useEffect(() => {
+    setSelectedContact(caregiverList[0]);
+  }, []);
+
   return (
     <>
       <Head>
@@ -17,7 +46,71 @@ export default function Kalender({ appointments }) {
       </Head>
       <NavBar />
       <main className={styles.main}>
-        {/* <AppointmentList appointments={appointments} /> */}
+        <div className={toolbar.container}>
+          <div className={toolbar.buttonContainer}>
+            <div className={toolbar.searchContainer}>
+              <div className={toolbar.textInput}>
+                <select
+                  className={toolbar.longSelectButton}
+                  onChange={(event) => {
+                    caregiverList.forEach((caregiver) => {
+                      if (caregiver._id == event.target.value) {
+                        setSelectedContact(caregiver);
+                      }
+                    });
+                  }}
+                >
+                  {caregiverList.map((caregiver) => {
+                    return (
+                      <option key={caregiver._id} value={caregiver._id}>
+                        {caregiver.lastname}, {caregiver.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            </div>
+            <div className={toolbar.buttons}>
+              <button
+                className={toolbar.newButton}
+                onClick={() => setModalState({ value: true, state: "new" })}
+              >
+                + Neu
+              </button>
+              <button
+                className={toolbar.editButton}
+                onClick={() => setModalState({ value: true, state: "edit" })}
+              >
+                Bearbeiten
+              </button>
+              <button
+                className={toolbar.deleteButton}
+                onClick={() => setModalState({ value: true, state: "delete" })}
+              >
+                Löschen
+              </button>
+            </div>
+          </div>
+        </div>
+        <AppointmentList
+          appointments={appointments}
+          customers={customers}
+          caregiver={selectedContact}
+        />
+        <Modal
+          isOpen={ModalState.value}
+          onRequestClose={() => setModalState({ value: false, state: "" })}
+          style={customStyles}
+          ariaHideApp={false}
+        >
+          {ModalState.state == "new" && <FormNewAppointment />}
+          {ModalState.state == "edit" && (
+            <FormEditAppointment appointments={appointments} />
+          )}
+          {ModalState.state == "delete" && (
+            <FormDeleteAppointment appointments={appointments} />
+          )}
+        </Modal>
       </main>
     </>
   );
@@ -34,9 +127,23 @@ export async function getServerSideProps() {
       .sort({ _id: -1 })
       .toArray();
 
+    const caregivers = await db
+      .collection("pflegekraft")
+      .find({})
+      .sort({ lastname: 1 })
+      .toArray();
+
+    const customers = await db
+      .collection("kunde")
+      .find({})
+      .sort({ lastname: 1 })
+      .toArray();
+
     return {
       props: {
         appointments: JSON.stringify(appointments),
+        caregivers: JSON.stringify(caregivers),
+        customers: JSON.stringify(customers),
       },
     };
   } catch (e) {

@@ -44,7 +44,21 @@
   background: #87c386;
   color: #fff;
   text-align: center;
-  font-size: 20px;
+  font-size: 28px;
+  font-family: Inter;
+  font-weight: 700;
+  line-height: 130%;
+  margin-right: 20px;
+}
+.submitDeleteContainer button {
+  margin-top: 50px;
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  background: #cd7070;
+  color: #fff;
+  text-align: center;
+  font-size: 28px;
   font-family: Inter;
   font-weight: 700;
   line-height: 130%;
