@@ -1,9 +1,10 @@
-import styles from "../styles/FormNew.module.css";
+import styles from "../../../styles/Form.module.css";
+import Router from "next/router";
 
 export default function FormNewContact() {
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await fetch("/api/new_contact", {
+    const response = await fetch("/api/contact/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,6 +24,7 @@ export default function FormNewContact() {
         inhouse: event.target.inhouse.checked,
       }),
     });
+    Router.reload(window.location.pathname);
   };
   return (
     <>

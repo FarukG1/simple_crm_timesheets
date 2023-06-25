@@ -1,4 +1,5 @@
-import clientPromise from "../../lib/mongodb";
+import clientPromise from "../../../lib/mongodb";
+import { ObjectId } from "mongodb";
 
 export default async function handler(req, res) {
   const client = await clientPromise;
@@ -7,12 +8,12 @@ export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
       if (req.headers["contact-type"] == "customer") {
-        console.log("CUSTOMER");
-        await db.collection("kunde").insertOne(body);
+        await db.collection("kunde").deleteOne({ _id: new ObjectId(body._id) });
       }
       if (req.headers["contact-type"] == "caregiver") {
-        console.log("CAREGIVER");
-        await db.collection("pflegekraft").insertOne(body);
+        await db
+          .collection("pflegekraft")
+          .deleteOne({ _id: new ObjectId(body._id) });
       }
       break;
   }

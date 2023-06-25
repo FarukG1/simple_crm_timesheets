@@ -1,8 +1,19 @@
-import styles from "../styles/ContactTable.module.css";
+import styles from "../../styles/ContactTable.module.css";
 import { useState } from "react";
 
-export default function CustomerList({ customers }) {
+export default function AppointmentList({ customers, query }) {
   const [data, setData] = useState(JSON.parse(customers));
+
+  const searchFilter = (array) => {
+    return array.filter((element) =>
+      (element.name + " " + element.lastname)
+        .toLowerCase()
+        .includes(query.toLowerCase())
+    );
+  };
+
+  const filtered = searchFilter(data);
+
   return (
     <table className={styles.table}>
       <thead>
@@ -17,7 +28,7 @@ export default function CustomerList({ customers }) {
         </tr>
       </thead>
       <tbody>
-        {data.map((customer) => {
+        {filtered.map((customer) => {
           return (
             <tr key={customer._id}>
               <th>

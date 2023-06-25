@@ -1,8 +1,19 @@
-import styles from "../styles/ContactTable.module.css";
+import styles from "../../styles/ContactTable.module.css";
 import { useState } from "react";
 
-export default function CaregiverList({ caregivers }) {
+export default function CaregiverList({ caregivers, query }) {
   const [data, setData] = useState(JSON.parse(caregivers));
+
+  const searchFilter = (array) => {
+    return array.filter((element) =>
+      (element.name + " " + element.lastname)
+        .toLowerCase()
+        .includes(query.toLowerCase())
+    );
+  };
+
+  const filtered = searchFilter(data);
+
   return (
     <table className={styles.table}>
       <thead>
@@ -17,7 +28,7 @@ export default function CaregiverList({ caregivers }) {
         </tr>
       </thead>
       <tbody>
-        {data.map((caregiver) => {
+        {filtered.map((caregiver) => {
           return (
             <tr key={caregiver._id}>
               <th>

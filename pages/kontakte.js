@@ -1,18 +1,24 @@
+// Default imports
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import toolbar from "../styles/Toolbar.module.css";
 import NavBar from "../components/navbar";
-import CustomerList from "../components/customer_list";
-import CaregiverList from "../components/caregiver_list";
-import FormNewContact from "../components/form_new";
-import FormEditContact from "../components/form_edit";
 import clientPromise from "../lib/mongodb";
 import Modal from "react-modal";
 import { useState } from "react";
 
+// Page specific imports
+import CustomerList from "../components/list/customer";
+import CaregiverList from "../components/list/caregiver";
+import FormNewContact from "../components/formular/contact/new";
+import FormEditContact from "../components/formular/contact/edit";
+import FormDeleteContact from "../components/formular/contact/delete";
+
 export default function Kontakte({ customers, caregivers }) {
   const [ModalState, setModalState] = useState({ value: false, modal: "new" });
   const [listType, setListType] = useState("customer");
+  const [query, setQuery] = useState("");
+  const [sendQuery, setSendQuery] = useState("");
   const customStyles = {
     overlay: {
       backgroundColor: "rgba(0, 0, 0, 0.6)",
@@ -27,6 +33,7 @@ export default function Kontakte({ customers, caregivers }) {
       width: "50%",
     },
   };
+
   return (
     <>
       <Head>
@@ -41,15 +48,24 @@ export default function Kontakte({ customers, caregivers }) {
           <div className={toolbar.buttonContainer}>
             <div className={toolbar.searchContainer}>
               <div className={toolbar.textInput}>
-                <input type="text" placeholder="Nach Einträgen suchen..." />
+                <input
+                  type="text"
+                  placeholder="Nach Einträgen suchen..."
+                  onChange={(event) => setQuery(event.target.value)}
+                />
               </div>
-              <button className={toolbar.searchButton}>Suchen</button>
+              <button
+                className={toolbar.searchButton}
+                onClick={() => setSendQuery(query)}
+              >
+                Suchen
+              </button>
             </div>
             <div className={toolbar.buttons}>
               <select
                 className={toolbar.selectButton}
                 defaultValue={listType}
-                onClick={() => setListType("customer")}
+                onClick={(event) => setListType(event.target.value)}
               >
                 <option value="customer">Kunden</option>
                 <option value="caregiver">Pflegekraft</option>
@@ -75,8 +91,12 @@ export default function Kontakte({ customers, caregivers }) {
             </div>
           </div>
         </div>
-        {listType == "customer" && <CustomerList customers={customers} />}
-        {listType == "caregiver" && <CaregiverList caregivers={caregivers} />}
+        {listType == "customer" && (
+          <CustomerList customers={customers} query={query} />
+        )}
+        {listType == "caregiver" && (
+          <CaregiverList caregivers={caregivers} query={query} />
+        )}
         <Modal
           isOpen={ModalState.value}
           onRequestClose={() => setModalState({ value: false, state: "" })}
@@ -86,6 +106,9 @@ export default function Kontakte({ customers, caregivers }) {
           {ModalState.state == "new" && <FormNewContact />}
           {ModalState.state == "edit" && (
             <FormEditContact customers={customers} caregivers={caregivers} />
+          )}
+          {ModalState.state == "delete" && (
+            <FormDeleteContact customers={customers} caregivers={caregivers} />
           )}
         </Modal>
       </main>
@@ -101,13 +124,13 @@ export async function getServerSideProps() {
     const customers = await db
       .collection("kunde")
       .find({})
-      .sort({ _id: -1 })
+      .sort({ lastname: 1 })
       .toArray();
 
     const caregivers = await db
       .collection("pflegekraft")
       .find({})
-      .sort({ _id: -1 })
+      .sort({ lastname: 1 })
       .toArray();
 
     return {

@@ -4,9 +4,8 @@ import NavBar from "../components/navbar";
 import CustomerList from "../components/customer_list";
 import clientPromise from "../lib/mongodb";
 
-export default function Kalender({ customers, caregivers }) {
-  const customersJSON = JSON.parse(customers);
-  const caregiversJSON = JSON.parse(caregivers);
+export default function Kalender({ appointments }) {
+  const appointmentsJSON = JSON.parse(appointments);
   return (
     <>
       <Head>
@@ -17,7 +16,7 @@ export default function Kalender({ customers, caregivers }) {
       </Head>
       <NavBar />
       <main className={styles.main}>
-        <CustomerList customers={customers} />
+        {/* <AppointmentList appointments={appointments} /> */}
       </main>
     </>
   );
@@ -28,22 +27,15 @@ export async function getServerSideProps() {
     const client = await clientPromise;
     const db = client.db("swe-projekt");
 
-    const customers = await db
-      .collection("kunde")
-      .find({})
-      .sort({ _id: -1 })
-      .toArray();
-
-    const caregivers = await db
-      .collection("pflegekraft")
+    const appointments = await db
+      .collection("termine")
       .find({})
       .sort({ _id: -1 })
       .toArray();
 
     return {
       props: {
-        customers: JSON.stringify(customers),
-        caregivers: JSON.stringify(caregivers),
+        appointments: JSON.stringify(appointments),
       },
     };
   } catch (e) {
