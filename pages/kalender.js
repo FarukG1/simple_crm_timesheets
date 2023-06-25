@@ -1,8 +1,9 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import NavBar from "../components/navbar";
-import CustomerList from "../components/customer_list";
 import clientPromise from "../lib/mongodb";
+
+import AppointmentList from "../components/list/appointment";
 
 export default function Kalender({ appointments }) {
   const appointmentsJSON = JSON.parse(appointments);
