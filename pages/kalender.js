@@ -12,11 +12,15 @@ import AppointmentList from "../components/list/appointment";
 import FormNewAppointment from "../components/formular/appointment/new";
 import FormEditAppointment from "../components/formular/appointment/edit";
 import FormDeleteAppointment from "../components/formular/appointment/delete";
+import moment from "moment";
 
 export default function Kalender({ appointments, caregivers, customers }) {
   const [ModalState, setModalState] = useState({ value: false, modal: "new" });
   const [caregiverList, setCaregiverList] = useState(JSON.parse(caregivers));
   const [selectedContact, setSelectedContact] = useState({});
+  const [selectedWeekInteger, setSelectedWeekInteger] = useState(0);
+  const [selectedWeek, setSelectedWeek] = useState({});
+
   const customStyles = {
     overlay: {
       backgroundColor: "rgba(0, 0, 0, 0.6)",
@@ -31,6 +35,35 @@ export default function Kalender({ appointments, caregivers, customers }) {
       width: "50%",
     },
   };
+
+  function calculateWeek(week) {
+    let weekStart = moment(
+      moment()
+        .locale("de")
+        .startOf("week")
+        .add(1, "d")
+        .add(week, "w")
+        .format("YYYY-MM-DD")
+    );
+    let weekEnd = moment(
+      moment()
+        .locale("de")
+        .endOf("week")
+        .add(1, "d")
+        .add(week, "w")
+        .format("YYYY-MM-DD")
+    );
+
+    return {
+      weekStart: weekStart,
+      weekEnd: weekEnd,
+      string: weekStart.format("DD.MM") + "-" + weekEnd.format("DD.MM"),
+    };
+  }
+
+  useEffect(() => {
+    setSelectedWeek(calculateWeek(selectedWeekInteger));
+  }, [selectedWeekInteger]);
 
   useEffect(() => {
     setSelectedContact(caregiverList[0]);
@@ -71,6 +104,25 @@ export default function Kalender({ appointments, caregivers, customers }) {
               </div>
             </div>
             <div className={toolbar.buttons}>
+              <div className={toolbar.buttons}>
+                <button
+                  className={toolbar.arrowLeftButton}
+                  onClick={() =>
+                    setSelectedWeekInteger(selectedWeekInteger - 1)
+                  }
+                >
+                  {"\u2190"}
+                </button>
+                <div className={toolbar.weekText}>{selectedWeek.string}</div>
+                <button
+                  className={toolbar.arrowRightButton}
+                  onClick={() =>
+                    setSelectedWeekInteger(selectedWeekInteger + 1)
+                  }
+                >
+                  {"\u2192"}
+                </button>
+              </div>
               <button
                 className={toolbar.newButton}
                 onClick={() => setModalState({ value: true, state: "new" })}
@@ -96,6 +148,7 @@ export default function Kalender({ appointments, caregivers, customers }) {
           appointments={appointments}
           customers={customers}
           caregiver={selectedContact}
+          selectedWeek={selectedWeek}
         />
         <Modal
           isOpen={ModalState.value}

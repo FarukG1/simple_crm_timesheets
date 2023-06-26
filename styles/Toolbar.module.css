@@ -33,6 +33,7 @@
   flex-direction: row;
   align-items: center;
   justify-items: center;
+  margin-right: 20px;
 }
 .textInput {
   width: 534px;
@@ -127,7 +128,6 @@
   line-height: 130%;
   border-radius: 10px;
   background: #cd7070;
-  margin-right: 20px;
 }
 .longSelectButton {
   width: 100%;
@@ -143,4 +143,43 @@
   font-weight: 700;
   line-height: 130%;
   margin-right: 20px;
+}
+.weekText {
+  width: 150px;
+  height: 50px;
+  border: none;
+  display: flex;
+  color: #fff;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-family: Inter;
+  font-weight: 700;
+  line-height: 130%;
+  border-left: 3px solid #fff;
+  border-right: 3px solid #fff;
+  background: #87c386;
+}
+.arrowRightButton,
+.arrowLeftButton {
+  width: 50px;
+  height: 50px;
+  border: none;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+  font-size: 30px;
+  font-family: Inter;
+  font-weight: 700;
+  line-height: 130%;
+  background: #87c386;
+}
+.arrowLeftButton {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.arrowRightButton {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }

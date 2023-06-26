@@ -1,15 +1,17 @@
 import styles from "../../styles/ContactTable.module.css";
-import table from "../../styles/CalenderTable.module.css";
 import { useEffect, useState } from "react";
+import moment from "moment";
 
 export default function AppointmentList({
   appointments,
   customers,
   caregiver,
+  selectedWeek,
 }) {
   const [data, setData] = useState({
     appointments: JSON.parse(appointments),
     customers: JSON.parse(customers),
+    filtered: [],
   });
   const [rows, setRows] = useState([
     "08:00-08:30",
@@ -33,10 +35,30 @@ export default function AppointmentList({
     "17:00-17:30",
     "17:30-18:00",
   ]);
-  const searchFilter = (array) => {
+  const caregiverFilter = (array) => {
     return array.filter((element) => element.pflegekraft_id == caregiver._id);
   };
-  const filtered = searchFilter(data.appointments);
+  const dateFilter = (array) => {
+    return array.filter((element) =>
+      moment(moment(element.date).format("YYYY-MM-DD"))
+        .locale("de")
+        .isBetween(selectedWeek.weekStart, selectedWeek.weekEnd, "days", "[]")
+    );
+  };
+
+  useEffect(() => {
+    setData({
+      ...data,
+      filtered: caregiverFilter(dateFilter(data.appointments)),
+    });
+  }, [selectedWeek.weekStart, selectedWeek.weekEnd]);
+
+  useEffect(() => {
+    setData({
+      ...data,
+      filtered: caregiverFilter(dateFilter(data.appointments)),
+    });
+  }, []);
 
   return (
     <table className={styles.table}>
@@ -62,7 +84,7 @@ export default function AppointmentList({
           let samstag = {};
           let sonntag = {};
 
-          filtered.forEach((appointment) => {
+          data.filtered.forEach((appointment) => {
             let date = new Date(Date.parse(appointment.date));
             let time = date.toLocaleTimeString([], {
               hour: "2-digit",
