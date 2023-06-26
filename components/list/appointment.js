@@ -51,7 +51,7 @@ export default function AppointmentList({
       ...data,
       filtered: caregiverFilter(dateFilter(data.appointments)),
     });
-  }, [selectedWeek.weekStart, selectedWeek.weekEnd]);
+  }, [selectedWeek.weekStart, selectedWeek.weekEnd, caregiver]);
 
   useEffect(() => {
     setData({
