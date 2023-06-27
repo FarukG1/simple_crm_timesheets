@@ -7,7 +7,6 @@ export default async function handler(req, res) {
   const body = req.body;
   switch (req.method) {
     case "POST":
-      console.log(body);
       await db.collection("termine").deleteOne({ _id: new ObjectId(body._id) });
       break;
   }

@@ -1,4 +1,4 @@
-import styles from "../../styles/ContactTable.module.css";
+import styles from "../../styles/Table.module.css";
 import { useEffect, useState } from "react";
 import moment from "moment";
 
@@ -7,6 +7,7 @@ export default function AppointmentList({
   customers,
   caregiver,
   selectedWeek,
+  onSelectedAppointment,
 }) {
   const [data, setData] = useState({
     appointments: JSON.parse(appointments),
@@ -35,8 +36,10 @@ export default function AppointmentList({
     "17:00-17:30",
     "17:30-18:00",
   ]);
+  const [selectedItem, setSelectedItem] = useState({});
+
   const caregiverFilter = (array) => {
-    return array.filter((element) => element.pflegekraft_id == caregiver._id);
+    return array.filter((element) => element.caregiver_id == caregiver._id);
   };
   const dateFilter = (array) => {
     return array.filter((element) =>
@@ -46,12 +49,27 @@ export default function AppointmentList({
     );
   };
 
+  const calculateStyle = (object) => {
+    if (object.hasOwnProperty("appointment")) {
+      if (object.appointment.hasOwnProperty("_id")) {
+        if (selectedItem._id == object.appointment._id) {
+          return styles.selectedItem;
+        }
+        return styles.existingItem;
+      }
+    }
+  };
+
   useEffect(() => {
     setData({
       ...data,
       filtered: caregiverFilter(dateFilter(data.appointments)),
     });
   }, [selectedWeek.weekStart, selectedWeek.weekEnd, caregiver]);
+
+  useEffect(() => {
+    onSelectedAppointment(selectedItem);
+  }, [selectedItem]);
 
   useEffect(() => {
     setData({
@@ -76,45 +94,46 @@ export default function AppointmentList({
       </thead>
       <tbody>
         {rows.map((row, index) => {
-          let montag = {};
-          let dienstag = {};
-          let mittwoch = {};
-          let donnerstag = {};
-          let freitag = {};
-          let samstag = {};
-          let sonntag = {};
+          let montag = { appointment: {}, customer: {} };
+          let dienstag = { appointment: {}, customer: {} };
+          let mittwoch = { appointment: {}, customer: {} };
+          let donnerstag = { appointment: {}, customer: {} };
+          let freitag = { appointment: {}, customer: {} };
+          let samstag = { appointment: {}, customer: {} };
+          let sonntag = { appointment: {}, customer: {} };
 
           data.filtered.forEach((appointment) => {
             let date = new Date(Date.parse(appointment.date));
+            date.setHours(date.getHours() - 1);
             let time = date.toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
             });
             let customer = data.customers.find(
-              (customer) => customer._id === appointment.kunde_id
+              (customer) => customer._id === appointment.customer_id
             );
             if (time == row.split("-")[0]) {
               switch (date.getDay()) {
                 case 0:
-                  sonntag = customer;
+                  sonntag = { appointment: appointment, customer: customer };
                   break;
                 case 1:
-                  montag = customer;
+                  montag = { appointment: appointment, customer: customer };
                   break;
                 case 2:
-                  dienstag = customer;
+                  dienstag = { appointment: appointment, customer: customer };
                   break;
                 case 3:
-                  mittwoch = customer;
+                  mittwoch = { appointment: appointment, customer: customer };
                   break;
                 case 4:
-                  donnerstag = customer;
+                  donnerstag = { appointment: appointment, customer: customer };
                   break;
                 case 5:
-                  freitag = customer;
+                  freitag = { appointment: appointment, customer: customer };
                   break;
                 case 6:
-                  samstag = customer;
+                  samstag = { appointment: appointment, customer: customer };
                   break;
               }
             }
@@ -122,39 +141,97 @@ export default function AppointmentList({
           return (
             <tr key={index}>
               <th>{row}</th>
-              <td>
-                {montag.hasOwnProperty("_id")
-                  ? montag.lastname + ", " + montag.name
+
+              <td
+                className={calculateStyle(montag)}
+                onClick={() => {
+                  if (montag.appointment.hasOwnProperty("_id")) {
+                    setSelectedItem(montag.appointment);
+                  }
+                }}
+              >
+                {montag.customer.hasOwnProperty("_id")
+                  ? montag.customer.lastname + ", " + montag.customer.name
                   : ""}
               </td>
-              <td>
-                {dienstag.hasOwnProperty("_id")
-                  ? dienstag.lastname + ", " + dienstag.name
+
+              <td
+                className={calculateStyle(dienstag)}
+                onClick={() => {
+                  if (dienstag.appointment.hasOwnProperty("_id")) {
+                    setSelectedItem(dienstag.appointment);
+                  }
+                }}
+              >
+                {dienstag.customer.hasOwnProperty("_id")
+                  ? dienstag.customer.lastname + ", " + dienstag.customer.name
                   : ""}
               </td>
-              <td>
-                {mittwoch.hasOwnProperty("_id")
-                  ? mittwoch.lastname + ", " + mittwoch.name
+
+              <td
+                className={calculateStyle(mittwoch)}
+                onClick={() => {
+                  if (mittwoch.appointment.hasOwnProperty("_id")) {
+                    setSelectedItem(mittwoch.appointment);
+                  }
+                }}
+              >
+                {mittwoch.customer.hasOwnProperty("_id")
+                  ? mittwoch.customer.lastname + ", " + mittwoch.customer.name
                   : ""}
               </td>
-              <td>
-                {donnerstag.hasOwnProperty("_id")
-                  ? donnerstag.lastname + ", " + donnerstag.name
+
+              <td
+                className={calculateStyle(donnerstag)}
+                onClick={() => {
+                  if (donnerstag.appointment.hasOwnProperty("_id")) {
+                    setSelectedItem(donnerstag.appointment);
+                  }
+                }}
+              >
+                {donnerstag.customer.hasOwnProperty("_id")
+                  ? donnerstag.customer.lastname +
+                    ", " +
+                    donnerstag.customer.name
                   : ""}
               </td>
-              <td>
-                {freitag.hasOwnProperty("_id")
-                  ? freitag.lastname + ", " + freitag.name
+
+              <td
+                className={calculateStyle(freitag)}
+                onClick={() => {
+                  if (freitag.appointment.hasOwnProperty("_id")) {
+                    setSelectedItem(freitag.appointment);
+                  }
+                }}
+              >
+                {freitag.customer.hasOwnProperty("_id")
+                  ? freitag.customer.lastname + ", " + freitag.customer.name
                   : ""}
               </td>
-              <td>
-                {samstag.hasOwnProperty("_id")
-                  ? samstag.lastname + ", " + samstag.name
+
+              <td
+                className={calculateStyle(samstag)}
+                onClick={() => {
+                  if (samstag.appointment.hasOwnProperty("_id")) {
+                    setSelectedItem(samstag.appointment);
+                  }
+                }}
+              >
+                {samstag.customer.hasOwnProperty("_id")
+                  ? samstag.customer.lastname + ", " + samstag.customer.name
                   : ""}
               </td>
-              <td>
-                {sonntag.hasOwnProperty("_id")
-                  ? sonntag.lastname + ", " + sonntag.name
+
+              <td
+                className={calculateStyle(sonntag)}
+                onClick={() => {
+                  if (sonntag.appointment.hasOwnProperty("_id")) {
+                    setSelectedItem(sonntag.appointment);
+                  }
+                }}
+              >
+                {sonntag.customer.hasOwnProperty("_id")
+                  ? sonntag.customer.lastname + ", " + sonntag.customer.name
                   : ""}
               </td>
             </tr>

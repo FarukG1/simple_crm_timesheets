@@ -20,6 +20,7 @@ export default function Kalender({ appointments, caregivers, customers }) {
   const [selectedContact, setSelectedContact] = useState({});
   const [selectedWeekInteger, setSelectedWeekInteger] = useState(0);
   const [selectedWeek, setSelectedWeek] = useState({});
+  const [selectedAppointment, setSelectedAppointment] = useState({});
 
   const customStyles = {
     overlay: {
@@ -77,7 +78,7 @@ export default function Kalender({ appointments, caregivers, customers }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NavBar />
+      <NavBar page="kalender" />
       <main className={styles.main}>
         <div className={toolbar.container}>
           <div className={toolbar.buttonContainer}>
@@ -149,6 +150,7 @@ export default function Kalender({ appointments, caregivers, customers }) {
           customers={customers}
           caregiver={selectedContact}
           selectedWeek={selectedWeek}
+          onSelectedAppointment={setSelectedAppointment}
         />
         <Modal
           isOpen={ModalState.value}
@@ -156,12 +158,18 @@ export default function Kalender({ appointments, caregivers, customers }) {
           style={customStyles}
           ariaHideApp={false}
         >
-          {ModalState.state == "new" && <FormNewAppointment />}
+          {ModalState.state == "new" && (
+            <FormNewAppointment customers={customers} caregivers={caregivers} />
+          )}
           {ModalState.state == "edit" && (
-            <FormEditAppointment appointments={appointments} />
+            <FormEditAppointment
+              customers={customers}
+              caregivers={caregivers}
+              appointment={selectedAppointment}
+            />
           )}
           {ModalState.state == "delete" && (
-            <FormDeleteAppointment appointments={appointments} />
+            <FormDeleteAppointment appointment={selectedAppointment} />
           )}
         </Modal>
       </main>

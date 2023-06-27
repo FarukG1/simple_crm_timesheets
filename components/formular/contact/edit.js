@@ -1,4 +1,5 @@
 import styles from "../../../styles/Form.module.css";
+import Router from "next/router";
 import { useEffect, useState } from "react";
 
 export default function FormEditContact({ customers, caregivers }) {
@@ -55,6 +56,7 @@ export default function FormEditContact({ customers, caregivers }) {
         inhouse: editedContact.inhouse,
       }),
     });
+    Router.reload(window.location.pathname);
   };
   return (
     <>
@@ -83,42 +85,46 @@ export default function FormEditContact({ customers, caregivers }) {
             <label htmlFor="caregiver">Pflegekraft</label>
           </div>
         </div>
-        <select
-          onChange={(event) => {
-            if (ContactType == "customer") {
-              data.customers.forEach((customer) => {
-                if (customer._id == event.target.value) {
-                  setSelectedContact(customer);
-                }
-              });
-            }
-            if (ContactType == "caregiver") {
-              data.caregivers.forEach((caregiver) => {
-                if (caregiver._id == event.target.value) {
-                  setSelectedContact(caregiver);
-                }
-              });
-            }
-          }}
-        >
-          {ContactType == "customer" &&
-            data.customers.map((customer) => {
-              return (
-                <option key={customer._id} value={customer._id}>
-                  {customer.lastname}, {customer.name}
-                </option>
-              );
-            })}
-          {ContactType == "caregiver" &&
-            data.caregivers.map((caregiver) => {
-              return (
-                <option key={caregiver._id} value={caregiver._id}>
-                  {caregiver.lastname}, {caregiver.name}
-                </option>
-              );
-            })}
-        </select>
-
+        <div className={styles.textInputContainer}>
+          <label htmlFor="select">Kontakt zum Bearbeiten auswählen: </label>
+          <select
+            name="select"
+            className={styles.textSelect}
+            onChange={(event) => {
+              if (ContactType == "customer") {
+                data.customers.forEach((customer) => {
+                  if (customer._id == event.target.value) {
+                    setSelectedContact(customer);
+                  }
+                });
+              }
+              if (ContactType == "caregiver") {
+                data.caregivers.forEach((caregiver) => {
+                  if (caregiver._id == event.target.value) {
+                    setSelectedContact(caregiver);
+                  }
+                });
+              }
+            }}
+          >
+            {ContactType == "customer" &&
+              data.customers.map((customer) => {
+                return (
+                  <option key={customer._id} value={customer._id}>
+                    {customer.lastname}, {customer.name}
+                  </option>
+                );
+              })}
+            {ContactType == "caregiver" &&
+              data.caregivers.map((caregiver) => {
+                return (
+                  <option key={caregiver._id} value={caregiver._id}>
+                    {caregiver.lastname}, {caregiver.name}
+                  </option>
+                );
+              })}
+          </select>
+        </div>
         <div className={styles.textInputContainer}>
           <label htmlFor="id">Im Pflegeheim: </label>
           <input

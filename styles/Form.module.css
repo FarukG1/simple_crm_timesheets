@@ -64,3 +64,15 @@
   line-height: 130%;
   margin-right: 20px;
 }
+.textInputContainer input,
+.textInputContainer select,
+.adressContainer input {
+  font-size: 20px;
+  font-family: Inter;
+  width: 250px;
+}
+.textSelect {
+  height: 100%;
+  font-size: 20px;
+  font-family: Inter;
+}

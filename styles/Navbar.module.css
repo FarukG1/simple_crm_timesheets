@@ -10,6 +10,7 @@
   line-height: 130%;
   background: #d9d9d9;
   height: 50px;
+  margin-bottom: 180px;
 }
 
 .navbar {
@@ -24,4 +25,42 @@
   overflow: hidden;
   background: #87c386;
   box-shadow: 10px 0px 100px 0px rgba(0, 0, 0, 0.25);
+}
+.navul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.navli {
+  width: 200px;
+  height: 50px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 28px;
+  font-family: Inter;
+  font-weight: 700;
+  line-height: 130%;
+  border-radius: 10px;
+}
+
+.navLink {
+  text-decoration: none;
+}
+
+.navli .active {
+  color: #fff;
+  border-radius: 10px;
+  border: 5px solid #fff;
+  background: #868cc3;
+}
+.navli .inactive {
+  color: #87c386;
+  border-radius: 10px;
+  background: #d9d9d9;
 }

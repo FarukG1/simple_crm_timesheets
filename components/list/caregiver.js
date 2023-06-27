@@ -1,4 +1,4 @@
-import styles from "../../styles/ContactTable.module.css";
+import styles from "../../styles/Table.module.css";
 import { useState } from "react";
 
 export default function CaregiverList({ caregivers, query }) {

@@ -11,17 +11,9 @@ export default async function handler(req, res) {
         { _id: new ObjectId(body._id) },
         {
           $set: {
-            name: body.name,
-            lastname: body.lastname,
-            birthdate: body.birthdate,
-            adress: {
-              street: body.adress.street,
-              nr: body.adress.nr,
-              zip: body.adress.zip,
-              city: body.adress.city,
-            },
-            email: body.email,
-            inhouse: body.inhouse,
+            customer_id: new ObjectId(body.customer_id),
+            caregiver_id: new ObjectId(body.caregiver_id),
+            date: body.date,
           },
         },
         { upsert: false }

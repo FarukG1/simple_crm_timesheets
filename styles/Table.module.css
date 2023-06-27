@@ -1,25 +1,11 @@
 /* Main Green: #87c386 */
 .table {
-  display: flex;
+  table-layout: fixed;
   border-collapse: collapse;
   font-size: 0.9em;
   font-family: sans-serif;
   width: 100%;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-}
-.table thead {
-  display: flex;
-  flex-shrink: 0;
-}
-.table tbody {
-  display: flex;
-  position: relative;
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-.table tr {
-  display: flex;
-  flex-direction: column;
 }
 .table thead tr {
   background-color: #f3f3f3;
@@ -27,10 +13,12 @@
   color: #000;
   text-align: left;
 }
+
 .table th,
 .table td {
   padding: 12px 15px;
   text-align: center;
+  height: 60px;
 }
 
 .table tbody tr {
@@ -48,4 +36,16 @@
 .table tbody tr.active-row {
   font-weight: bold;
   color: #87c386;
+}
+
+.existingItem {
+  color: #fff;
+  background-color: #87c386;
+  border-radius: 10px;
+}
+
+.selectedItem {
+  color: #fff;
+  background-color: #868cc3;
+  border-radius: 10px;
 }
