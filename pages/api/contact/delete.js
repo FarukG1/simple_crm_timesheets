@@ -8,9 +8,11 @@ export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
       if (req.headers["contact-type"] == "customer") {
+        console.log(req.headers["contact-type"]);
         await db.collection("kunde").deleteOne({ _id: new ObjectId(body._id) });
       }
       if (req.headers["contact-type"] == "caregiver") {
+        console.log(req.headers["contact-type"]);
         await db
           .collection("pflegekraft")
           .deleteOne({ _id: new ObjectId(body._id) });

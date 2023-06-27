@@ -177,9 +177,13 @@ export default function FormEditContact({ customers, caregivers }) {
             type="date"
             name="birthdate"
             required={true}
-            defaultValue={new Date(
-              Date.parse(selectedContact.birthdate)
-            ).toLocaleDateString("de-DE", { timeZone: "UTC" })}
+            defaultValue={
+              selectedContact.birthdate
+                ? new Date(selectedContact.birthdate)
+                    .toISOString()
+                    .substring(0, 10)
+                : ""
+            }
             onChange={(event) =>
               setEditedContact({
                 ...editedContact,

@@ -30,7 +30,7 @@ export default async function handler(req, res) {
       }
       if (req.headers["contact-type"] == "caregiver") {
         await db.collection("pflegekraft").updateOne(
-          { _id: ObjectId(body._id) },
+          { _id: new ObjectId(body._id) },
           {
             $set: {
               name: body.name,

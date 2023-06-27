@@ -11,7 +11,6 @@ export default function CaregiverList({ caregivers, query }) {
         .includes(query.toLowerCase())
     );
   };
-
   const filtered = searchFilter(data);
 
   return (

@@ -14,6 +14,24 @@ export default function FormDeleteContact({ customers, caregivers }) {
     setSelectedContact(data.customers[0]);
   }, []);
 
+  useEffect(() => {
+    if (ContactType == "customer") {
+      setSelectedContact(data.customers[0]);
+    }
+    if (ContactType == "caregiver") {
+      setSelectedContact(data.caregivers[0]);
+    }
+  }, [ContactType]);
+
+  useEffect(() => {
+    if (ContactType == "customer") {
+      setSelectedContact(data.customers[0]);
+    }
+    if (ContactType == "caregiver") {
+      setSelectedContact(data.caregivers[0]);
+    }
+  }, []);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const response = await fetch("/api/contact/delete", {
@@ -84,10 +102,10 @@ export default function FormDeleteContact({ customers, caregivers }) {
                 );
               })}
             {ContactType == "caregiver" &&
-              data.caregivers.map((customer) => {
+              data.caregivers.map((caregiver) => {
                 return (
-                  <option key={customer._id} value={caregiver._id}>
-                    {customer.lastname}, {customer.name}
+                  <option key={caregiver._id} value={caregiver._id}>
+                    {caregiver.lastname}, {caregiver.name}
                   </option>
                 );
               })}
