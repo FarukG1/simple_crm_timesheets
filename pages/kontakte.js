@@ -92,10 +92,10 @@ export default function Kontakte({ customers, caregivers }) {
           </div>
         </div>
         {listType == "customer" && (
-          <CustomerList customers={customers} query={query} />
+          <CustomerList customers={customers} query={sendQuery} />
         )}
         {listType == "caregiver" && (
-          <CaregiverList caregivers={caregivers} query={query} />
+          <CaregiverList caregivers={caregivers} query={sendQuery} />
         )}
         <Modal
           isOpen={ModalState.value}
