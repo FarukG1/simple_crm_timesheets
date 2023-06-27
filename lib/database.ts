@@ -1,28 +1,27 @@
 import clientPromise from "./mongodb";
-import { Table, TableType } from "./types";
 import { Customer, Caregiver, Appointment} from "./classes";
 
 export class DatabaseClass {
-  async get(table: TableType){
+  async get(table: string){
     const client = await clientPromise;
     try {
       const db = client.db("swe-projekt");
   
-      if(table == new Table().Customer) {
+      if(table == "customers") {
         return await db.collection("kunde")
           .find({})
           .sort({ _id: -1 })
           .toArray();
       }
   
-      if(table == new Table().Caregiver) {
+      if(table == "caregivers") {
         return await db.collection("pflegekraft")
           .find({})
           .sort({ _id: -1 })
           .toArray();
       }
   
-      if(table == new Table().Appointment) {
+      if(table == "appointments") {
         return await db.collection("termin")
           .find({})
           .sort({ _id: -1 })
@@ -31,8 +30,6 @@ export class DatabaseClass {
   
     } catch (e) {
       console.error(e);
-    } finally {
-      await client.close();
     }
   }
   async create(data: Customer | Caregiver | Appointment) {
@@ -55,8 +52,6 @@ export class DatabaseClass {
     } catch (e) {
       console.error(e);
       throw new Error("Failed to fetch data");
-    } finally {
-      await client.close();
     }
   }
   async update(data: Customer | Caregiver | Appointment) {
@@ -87,8 +82,6 @@ export class DatabaseClass {
   
     } catch (e) {
       console.error(e);
-    } finally {
-      await client.close();
     }
   }
   async remove(data: Customer | Caregiver | Appointment) {
@@ -113,8 +106,6 @@ export class DatabaseClass {
   
     } catch (e) {
       console.error(e);
-    } finally {
-      await client.close();
     }
   }
 }
