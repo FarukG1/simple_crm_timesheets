@@ -3,18 +3,24 @@ import Router from "next/router";
 import { useEffect, useState } from "react";
 
 export default function FormEditContact({ customers, caregivers }) {
-  const [data, setData] = useState({
+  // Customers and caregivers Object Array
+  const data = {
     customers: JSON.parse(customers),
     caregivers: JSON.parse(caregivers),
-  });
+  };
+  // Contact type ("customer" or "caregiver")
   const [ContactType, setContactType] = useState("customer");
+  // The selected contact
   const [selectedContact, setSelectedContact] = useState({});
+  // The edited contact
   const [editedContact, setEditedContact] = useState({});
 
+  // Set edited contact to selected contact when a contact is selected
   useEffect(() => {
     setEditedContact(selectedContact);
   }, [selectedContact]);
 
+  // Set selected contact on given contact type when contact type changes
   useEffect(() => {
     if (ContactType == "customer") {
       setSelectedContact(data.customers[0]);
@@ -23,7 +29,6 @@ export default function FormEditContact({ customers, caregivers }) {
       setSelectedContact(data.caregivers[0]);
     }
   }, [ContactType]);
-
   useEffect(() => {
     if (ContactType == "customer") {
       setSelectedContact(data.customers[0]);
@@ -33,8 +38,12 @@ export default function FormEditContact({ customers, caregivers }) {
     }
   }, []);
 
+  // Handle submit of the form
   const handleSubmit = async (event) => {
+    // Prevent default action of form
     event.preventDefault();
+
+    // fetch api call to edit a contact
     const response = await fetch("/api/contact/edit", {
       method: "POST",
       headers: {
@@ -58,6 +67,7 @@ export default function FormEditContact({ customers, caregivers }) {
     });
     Router.reload(window.location.pathname);
   };
+
   return (
     <>
       <h1>Kontakt Bearbeiten:</h1>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import styles from "../styles/Navbar.module.css";
 
 export default function NavBar({ page }) {
+  // Calculate wich styles to use
   const activeStyle = (_page, element) => {
     if (element == "li") {
       if (_page == page) {

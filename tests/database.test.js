@@ -1,6 +1,6 @@
 const { MongoClient } = require("mongodb");
 
-describe("insert", () => {
+describe("check", () => {
   let client;
   let db;
 

@@ -1,17 +1,18 @@
 import styles from "../../../styles/Form.module.css";
 import Router from "next/router";
-import { useState } from "react";
 
 export default function FormEditContact({
   appointment,
   customers,
   caregivers,
 }) {
-  const [data, setData] = useState({
+  // Customers and Caregivers Object Array
+  const data = {
     customers: JSON.parse(customers),
     caregivers: JSON.parse(caregivers),
-  });
-  const [timeSlots, setTimeSlots] = useState([
+  };
+  // Available Timeslots
+  const timeSlots = [
     "08:00-08:30",
     "08:30-09:00",
     "09:00-09:30",
@@ -32,17 +33,27 @@ export default function FormEditContact({
     "16:30-17:00",
     "17:00-17:30",
     "17:30-18:00",
-  ]);
+  ];
+
+  // The start Time of the Appointment
   const startDateTime = new Date(appointment.date);
+  // Need to add one hour because of Timezone
   startDateTime.setHours(startDateTime.getHours() - 1);
+
+  // The end Time of the Appointment
   const endDateTime = new Date(appointment.date);
+  // Need to add one hour because of Timezone
   endDateTime.setHours(endDateTime.getHours() - 1);
+  // Calculate end hour time
   endDateTime.setHours(
     startDateTime.getMinutes() == 30
       ? endDateTime.getHours() + 1
       : endDateTime.getHours()
   );
+  // Calculate end minute time
   endDateTime.setMinutes(startDateTime.getMinutes() == 30 ? 0 : 30);
+
+  // Get the time as string from start to end (08:00-8:30)
   const stringDateTime =
     startDateTime.toLocaleTimeString([], {
       hour: "2-digit",
@@ -54,15 +65,25 @@ export default function FormEditContact({
       minute: "2-digit",
     });
 
+  // Handle submit of the form
   const handleSubmit = async (event) => {
+    // Prevent default action of form
     event.preventDefault();
+
+    // get date of appointment
     let date = new Date(event.target.date.value);
+    // get the start time of the timeslot
     let time = event.target.timeSlot.value.split("-")[0];
+    // get the hour of the start time
     let hour = parseInt(time.split(":")[0]);
+    // get the minute of the start time
     let minute = parseInt(time.split(":")[1]);
+    // set the hour
     date.setHours(hour + 1);
+    // set the minute
     date.setMinutes(minute);
 
+    // fetch api call to edit an appointment
     const response = await fetch("/api/appointment/edit", {
       method: "POST",
       headers: {
@@ -77,8 +98,6 @@ export default function FormEditContact({
     });
     Router.reload(window.location.pathname);
   };
-
-  console.log(appointment);
 
   return (
     <>

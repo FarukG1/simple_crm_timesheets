@@ -2,8 +2,12 @@ import styles from "../../../styles/Form.module.css";
 import Router from "next/router";
 
 export default function FormNewContact() {
+  // Handle submit of the form
   const handleSubmit = async (event) => {
+    // Prevent default action of form
     event.preventDefault();
+
+    // fetch api call to add a contact
     const response = await fetch("/api/contact/new", {
       method: "POST",
       headers: {
@@ -26,6 +30,7 @@ export default function FormNewContact() {
     });
     Router.reload(window.location.pathname);
   };
+
   return (
     <>
       <h1>Neuen Kontakt hinzufügen:</h1>

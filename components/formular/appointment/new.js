@@ -1,13 +1,14 @@
 import styles from "../../../styles/Form.module.css";
 import Router from "next/router";
-import { useState } from "react";
 
 export default function FormNewContact({ customers, caregivers }) {
-  const [data, setData] = useState({
+  // Customers and Caregivers Object Array
+  const data = {
     customers: JSON.parse(customers),
     caregivers: JSON.parse(caregivers),
-  });
-  const [timeSlots, setTimeSlots] = useState([
+  };
+  // Available Timeslots
+  const timeSlots = [
     "08:00-08:30",
     "08:30-09:00",
     "09:00-09:30",
@@ -28,16 +29,26 @@ export default function FormNewContact({ customers, caregivers }) {
     "16:30-17:00",
     "17:00-17:30",
     "17:30-18:00",
-  ]);
+  ];
 
+  // Handle submit of the form
   const handleSubmit = async (event) => {
+    // Prevent default action of form
     event.preventDefault();
+    // get date of appointment
     let date = new Date(event.target.date.value);
+    // get the start time of the timeslot
     let time = event.target.timeSlot.value.split("-")[0];
+    // get the hour of the start time
     let hour = parseInt(time.split(":")[0]);
+    // get the minute of the start time
     let minute = parseInt(time.split(":")[1]);
+    // set the hour
     date.setHours(hour + 1);
+    // set the minute
     date.setMinutes(minute);
+
+    // fetch api call to add an appointment
     const response = await fetch("/api/appointment/new", {
       method: "POST",
       headers: {
@@ -51,6 +62,7 @@ export default function FormNewContact({ customers, caregivers }) {
     });
     Router.reload(window.location.pathname);
   };
+
   return (
     <>
       <h1>Neuen Termin hinzufügen:</h1>

@@ -118,15 +118,19 @@ export default function Kontakte({ customers, caregivers }) {
 
 export async function getServerSideProps() {
   try {
+    // Get mongodb client connection
     const client = await clientPromise;
+    // Get the databes
     const db = client.db("swe-projekt");
 
+    // Get array of objects of all elements inside the table (collection)
     const customers = await db
       .collection("kunde")
       .find({})
       .sort({ lastname: 1 })
       .toArray();
 
+    // Get array of objects of all elements inside the table (collection)
     const caregivers = await db
       .collection("pflegekraft")
       .find({})

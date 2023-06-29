@@ -2,8 +2,10 @@ import styles from "../../styles/Table.module.css";
 import { useState } from "react";
 
 export default function CustomerList({ customers, query }) {
-  const [data, setData] = useState(JSON.parse(customers));
+  // Customers object array
+  const data = JSON.parse(customers);
 
+  // Filter function, searches for the query
   const searchFilter = (array) => {
     return array.filter((element) =>
       (element.name + " " + element.lastname)
@@ -11,7 +13,6 @@ export default function CustomerList({ customers, query }) {
         .includes(query.toLowerCase())
     );
   };
-
   const filtered = searchFilter(data);
 
   return (

@@ -9,12 +9,13 @@ export default function AppointmentList({
   selectedWeek,
   onSelectedAppointment,
 }) {
+  // Customers and caregivers Object Array and filtered array
   const [data, setData] = useState({
     appointments: JSON.parse(appointments),
     customers: JSON.parse(customers),
     filtered: [],
   });
-  const [rows, setRows] = useState([
+  const rows = [
     "08:00-08:30",
     "08:30-09:00",
     "09:00-09:30",
@@ -35,12 +36,15 @@ export default function AppointmentList({
     "16:30-17:00",
     "17:00-17:30",
     "17:30-18:00",
-  ]);
+  ];
+  // The selected item
   const [selectedItem, setSelectedItem] = useState({});
 
+  // Filter function, gets only the appointments of the given caregiver
   const caregiverFilter = (array) => {
     return array.filter((element) => element.caregiver_id == caregiver._id);
   };
+  // Filter function, gets only the appointments in the given week
   const dateFilter = (array) => {
     return array.filter((element) =>
       moment(moment(element.date).format("YYYY-MM-DD"))
@@ -48,7 +52,7 @@ export default function AppointmentList({
         .isBetween(selectedWeek.weekStart, selectedWeek.weekEnd, "days", "[]")
     );
   };
-
+  // Calculates wich styles to use
   const calculateStyle = (object) => {
     if (object.hasOwnProperty("appointment")) {
       if (object.appointment.hasOwnProperty("_id")) {
@@ -60,17 +64,16 @@ export default function AppointmentList({
     }
   };
 
+  // Set filtered list when the week or the caregiver changes
   useEffect(() => {
     setData({
       ...data,
       filtered: caregiverFilter(dateFilter(data.appointments)),
     });
   }, [selectedWeek.weekStart, selectedWeek.weekEnd, caregiver]);
-
   useEffect(() => {
     onSelectedAppointment(selectedItem);
   }, [selectedItem]);
-
   useEffect(() => {
     setData({
       ...data,

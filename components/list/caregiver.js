@@ -2,8 +2,10 @@ import styles from "../../styles/Table.module.css";
 import { useState } from "react";
 
 export default function CaregiverList({ caregivers, query }) {
-  const [data, setData] = useState(JSON.parse(caregivers));
+  // Caregiver object array
+  const data = JSON.parse(caregivers);
 
+  // Filter function, searches for the query
   const searchFilter = (array) => {
     return array.filter((element) =>
       (element.name + " " + element.lastname)

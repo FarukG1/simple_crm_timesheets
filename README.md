@@ -1,20 +1,12 @@
 ## Start Development Server
 
 ```bash
+npm install
 npm run dev
 ```
 
-Open [http://130.61.89.78:3000](http://130.61.89.78:3000).
+## Start jest test
 
-Vereine:
-
-ALLIANZ
-BAMENIA
-BBKK UKV = VKB
-Continentale
-Deutsche Familien Versicherung
-Die Bayerische
-Gothaer
-münchener verein
-SDK
-Signal Iduna
+```bash
+npm test
+```

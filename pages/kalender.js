@@ -5,7 +5,7 @@ import toolbar from "../styles/Toolbar.module.css";
 import NavBar from "../components/navbar";
 import clientPromise from "../lib/mongodb";
 import Modal from "react-modal";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // Page specific imports
 import AppointmentList from "../components/list/appointment";
@@ -16,12 +16,11 @@ import moment from "moment";
 
 export default function Kalender({ appointments, caregivers, customers }) {
   const [ModalState, setModalState] = useState({ value: false, modal: "new" });
-  const [caregiverList, setCaregiverList] = useState(JSON.parse(caregivers));
   const [selectedContact, setSelectedContact] = useState({});
   const [selectedWeekInteger, setSelectedWeekInteger] = useState(0);
   const [selectedWeek, setSelectedWeek] = useState({});
   const [selectedAppointment, setSelectedAppointment] = useState({});
-
+  const caregiverList = JSON.parse(caregivers);
   const customStyles = {
     overlay: {
       backgroundColor: "rgba(0, 0, 0, 0.6)",
@@ -37,6 +36,7 @@ export default function Kalender({ appointments, caregivers, customers }) {
     },
   };
 
+  // Calculate the week we have now
   function calculateWeek(week) {
     let weekStart = moment(
       moment()
@@ -179,21 +179,26 @@ export default function Kalender({ appointments, caregivers, customers }) {
 
 export async function getServerSideProps() {
   try {
+    // Get mongodb client connection
     const client = await clientPromise;
+    // Get the databes
     const db = client.db("swe-projekt");
 
+    // Get array of objects of all elements inside the table (collection)
     const appointments = await db
       .collection("termine")
       .find({})
       .sort({ _id: -1 })
       .toArray();
 
+    // Get array of objects of all elements inside the table (collection)
     const caregivers = await db
       .collection("pflegekraft")
       .find({})
       .sort({ lastname: 1 })
       .toArray();
 
+    // Get array of objects of all elements inside the table (collection)
     const customers = await db
       .collection("kunde")
       .find({})

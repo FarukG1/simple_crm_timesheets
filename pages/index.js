@@ -7,6 +7,12 @@ import clientPromise from "../lib/mongodb";
 import Modal from "react-modal";
 import { useEffect, useState } from "react";
 
+/*
+  We could not do the homepage which should be
+  the dashboard where you would see all
+  appointments of one day of all caregivers at once
+*/
+
 export default function Home({ appointments, caregivers }) {
   const [data, setData] = useState({
     appointments: JSON.parse(appointments),
@@ -55,9 +61,12 @@ export default function Home({ appointments, caregivers }) {
 
 export async function getServerSideProps() {
   try {
+    // Get mongodb client connection
     const client = await clientPromise;
+    // Get the databes
     const db = client.db("swe-projekt");
 
+    // Get array of objects of all elements inside the table (collection)
     const appointments = await db
       .collection("termine")
       .find({})
@@ -65,6 +74,7 @@ export async function getServerSideProps() {
       .limit(1)
       .toArray();
 
+    // Get array of objects of all elements inside the table (collection)
     const caregivers = await db
       .collection("pflegekraft")
       .find({})
