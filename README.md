@@ -1,3 +1,6 @@
+## Group Members
+Diyar Altin, Yusuf Celik, Faruk-Kerim Güc
+
 ## Start Development Server
 
 ``` .env.local ``` needed for development server.
